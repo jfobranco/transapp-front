@@ -1,24 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-const App: React.FC = () => {
+import Header from './components/Header';
+import Entry from './components/Entry';
+import EntryList from './components/EntryList';
+
+import EntryModel from './models/entryModel';
+
+const defaultEntry: EntryModel = {
+  _id: '123',
+  date: new Date().toDateString(),
+  translations: [
+    {
+      _id: '456',
+      language: 'en',
+      title: 'title',
+      text: 'text'
+    }
+  ],
+};
+
+interface IState {
+  selectedEntry?: EntryModel;
+}
+
+const App: React.FC<IState> = (state) => {
+  const [selectedEntry, setSelectedEntry] = useState(defaultEntry);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <br />
+      <div className="Content">
+        <div className="ContentLeft">
+          <EntryList selectEntry={setSelectedEntry} />
+        </div>
+        <Entry entry={selectedEntry} />
+      </div>
     </div>
   );
 }
